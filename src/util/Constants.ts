@@ -5,4 +5,4 @@
  * @export
  * @type {string}
  */
-export const apiHost: string = "https://api.weeb.sh";
+export const apiHost: string = "https://api.weeb.sh/images";

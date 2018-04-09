@@ -48,6 +48,7 @@ export class Client {
 				request.query(key, value);
 			};
 		};
+		request.set('Authorization', this.token)
 		return request.then(result => result.body);
 	}
 
