@@ -29,7 +29,7 @@ interface RequestOptions {
 
 export class Client {
 	public constructor(options: ClientOptions) {
-		if (!options.token) throw new Error('Token is a reqiured parameter!')
+		if (!options.token) throw new Error('Token is a required parameter!')
 		if (!options.tokenType) throw new Error('TokenType is a required parameter')
 		this.token = `${options.tokenType} ${options.token}`;
 		this.userAgent = options.userAgent || `weebts/${version}`;
