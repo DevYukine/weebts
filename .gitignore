@@ -58,3 +58,6 @@ package-lock.json
 
 # VSCode setting folder
 .vscode/
+
+# JS build
+build/

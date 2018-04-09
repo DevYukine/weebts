@@ -1,12 +1,13 @@
 import { apiHost } from './util/Constants';
-import { TokenType } from "./util/TokenType";
 import { get } from 'snekfetch';
 import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './responses/Responses';
+import { TokenTypes } from "./util/TokenTypes";
 
+export { TokenTypes } from "./util/TokenTypes";
 export const version: string = JSON.parse(require('../package.json')).version;
 
 export interface ClientOptions {
-	tokenType: TokenType;
+	tokenType: TokenTypes;
 	token: string;
 	userAgent?: string;
 }

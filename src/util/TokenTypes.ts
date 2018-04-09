@@ -3,9 +3,9 @@
  * 
  * @enum
  * @export
- * @name TokenType
+ * @name TokenTypes
  */
-export enum TokenType {
+export enum TokenTypes {
 	Bearer = "Bearer",
 	Wolke = "Wolke"
 }
