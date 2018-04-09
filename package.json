@@ -8,11 +8,9 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@types/node": "^9.6.2",
+    "@types/snekfetch": "^3.1.0",
     "snekfetch": "^3.6.4",
     "typescript": "^2.8.1"
-  },
-  "devDependencies": {
-    "@types/node": "^9.6.2",
-    "@types/snekfetch": "^3.1.0"
   }
 }
