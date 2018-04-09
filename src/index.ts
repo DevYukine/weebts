@@ -4,7 +4,7 @@ import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './res
 import { TokenTypes } from "./util/TokenTypes";
 
 export { TokenTypes } from "./util/TokenTypes";
-export const version: string = JSON.parse(require('../package.json')).version;
+export const version: string = require('../package.json').version;
 
 export interface ClientOptions {
 	tokenType: TokenTypes;
@@ -51,15 +51,15 @@ export class Client {
 		return request.then(result => result.body);
 	}
 
-	public async getTypes(params: QueryParameter): Promise<TypeResponse> {
+	public async getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
 		return this.makeRequest({ path: '/types' , params });
 	}
 
-	public async getTags(params: QueryParameter): Promise<TagsResponse> {
+	public async getTags(params: QueryParameter = {}): Promise<TagsResponse> {
 		return this.makeRequest({ path: '/tags' , params });
 	}
 
-	public async getRandom(params: QueryParameter): Promise<RandomResponse> {
+	public async getRandom(params: QueryParameter = {}): Promise<RandomResponse> {
 		return this.makeRequest({ path: '/random', params });
 	}
 
