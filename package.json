@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Typescript wrapper around weeb.sh",
   "main": "./build/index.js",
+  "types": "./build/types/index.d.ts",
   "repository": "git@github.com:Dev-Yukine/weebts.git",
   "author": "yukine@gmx.com",
   "license": "MIT",
