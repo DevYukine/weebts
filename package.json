@@ -1,0 +1,18 @@
+{
+  "name": "weeb.ts",
+  "version": "1.0.0",
+  "description": "Typescript wrapper around weeb.sh",
+  "main": "./src/Client.js",
+  "repository": "git@github.com:Dev-Yukine/weeb.ts.git",
+  "author": "yukine@gmx.com",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "snekfetch": "^3.6.4",
+    "typescript": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^9.6.2",
+    "@types/snekfetch": "^3.1.0"
+  }
+}
