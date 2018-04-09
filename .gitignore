@@ -60,4 +60,4 @@ package-lock.json
 .vscode/
 
 # JS build
-build/
+dist/
