@@ -1,11 +1,3 @@
-export interface Preview {
-	url: string,
-	id: string,
-	fileType: string,
-	baseType: string,
-	type: string
-}
-
 export type TypeResponse = {
 	status: number,
 	types: Array<string>,
@@ -17,7 +9,15 @@ export type TagsResponse = {
 	tags: Array<string>
 }
 
-export interface RandomResponse extends Preview {
+export interface Preview {
+	url: string,
+	id: string,
+	fileType: string,
+	baseType: string,
+	type: string
+}
+
+export interface ImageResponse extends Preview {
 	nsfw: boolean,
 	mimeType: string,
 	tags: Array<String>,
@@ -25,6 +25,6 @@ export interface RandomResponse extends Preview {
 	account: string
 }
 
-export interface ImageResponse extends RandomResponse {
+export interface RandomResponse extends ImageResponse {
 
 }

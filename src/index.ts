@@ -4,9 +4,9 @@ import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './res
 import { TokenTypes } from "./util/TokenTypes";
 
 export { TokenTypes } from "./util/TokenTypes";
-export const version: string = require('../package.json').version;
+export const { version, name } = require('../package.json');
 
-export interface ClientOptions {
+export type ClientOptions = {
 	tokenType: TokenTypes;
 	token: string;
 	userAgent?: string;
@@ -22,7 +22,11 @@ export type QueryParameter = {
 	filetype?: string,
 }
 
-interface RequestOptions {
+type Query = {
+	[key: string]: any
+}
+
+type RequestOptions = {
 	path: string,
 	params?: QueryParameter,
 }
@@ -32,24 +36,27 @@ export class Client {
 		if (!options.token) throw new Error('Token is a reqiured parameter!')
 		if (!options.tokenType) throw new Error('TokenType is a required parameter')
 		this.token = `${options.tokenType} ${options.token}`;
-		this.userAgent = options.userAgent || `weebts/${version}`;
+		this.userAgent = options.userAgent || `${name}/${version}`;
 	}
 
 	private token: string;
 	private userAgent: string;
 
 	private async makeRequest(options: RequestOptions): Promise<any>{
-		const request = get(`${apiHost}${options.path}`);
-		if(options.params) {
-			for(let key in options.params) {
-				let value = options.params[key];
-				if(Array.isArray(value)) value = value.join(', ')
-				else value = String(value);
-				request.query(key, value);
-			};
-		};
-		request.set('Authorization', this.token)
-		return request.then(result => result.body);
+		const query: Query = {};
+		if (options.params) {
+			for (const key of Object.keys(options.params)) {
+				const val = options.params[key];
+				query[key] = Array.isArray(val) ? val.map(String).join(", ") : String(val);
+			}
+		}
+		const request = get(`${apiHost}${options.path}`)
+			.set('Authorization', this.token);
+		for (const key of Object.keys(query)) {
+			request.query(key, query[key]);
+		}
+		return request
+			.then(res => res.body);
 	}
 
 	public async getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
