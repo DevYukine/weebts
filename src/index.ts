@@ -42,7 +42,7 @@ export class Client {
 	private token: string;
 	private userAgent: string;
 
-	private async makeRequest(options: RequestOptions): Promise<any>{
+	private makeRequest(options: RequestOptions): Promise<any>{
 		const query: Query = {};
 		if (options.params) {
 			for (const key of Object.keys(options.params)) {
@@ -59,15 +59,15 @@ export class Client {
 			.then(res => res.body);
 	}
 
-	public async getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
+	public getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
 		return this.makeRequest({ path: '/types' , params });
 	}
 
-	public async getTags(params: QueryParameter = {}): Promise<TagsResponse> {
+	public getTags(params: QueryParameter = {}): Promise<TagsResponse> {
 		return this.makeRequest({ path: '/tags' , params });
 	}
 
-	public async getRandom(params: QueryParameter = {}): Promise<RandomResponse> {
+	public getRandom(params: QueryParameter = {}): Promise<RandomResponse> {
 		return this.makeRequest({ path: '/random', params });
 	}
 
