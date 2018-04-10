@@ -71,7 +71,7 @@ export class Client {
 		return this.makeRequest({ path: '/random', params });
 	}
 
-	public async getImage(id: String): Promise<ImageResponse> {
+	public getImage(id: String): Promise<ImageResponse> {
 		return this.makeRequest({ path: `/info/${id}` });
 	}
 }
