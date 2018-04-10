@@ -3,8 +3,8 @@ import { get } from 'snekfetch';
 import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './responses/Responses';
 import { TokenTypes } from "./util/TokenTypes";
 
+export const { version } = require('../package.json');
 export { TokenTypes } from "./util/TokenTypes";
-export const { version, name } = require('../package.json');
 
 export type ClientOptions = {
 	tokenType: TokenTypes;
@@ -36,7 +36,7 @@ export class Client {
 		if (!options.token) throw new Error('Token is a required parameter!')
 		if (!options.tokenType) throw new Error('TokenType is a required parameter')
 		this.token = `${options.tokenType} ${options.token}`;
-		this.userAgent = options.userAgent || `${name}/${version}`;
+		this.userAgent = options.userAgent || `weebts/${version}`;
 	}
 
 	private token: string;

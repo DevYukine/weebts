@@ -1,7 +1,7 @@
 {
   "name": "weebts",
-  "version": "1.0.2",
-  "description": "Typescript wrapper around weeb.sh",
+  "version": "1.0.3",
+  "description": "Typescript and Javascript wrapper around weeb.sh",
   "main": "./dist/index.js",
   "types": "./dist/typings/index.d.ts",
   "repository": "git@github.com:Dev-Yukine/weebts.git",
@@ -9,9 +9,15 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "snekfetch": "^3.6.4"
+  },
+  "peerDependencies": {
+    "@types/node": "^9.6.2",
+    "@types/snekfetch": "^3.1.0"
+  },
+  "devDependencies": {
     "@types/node": "^9.6.2",
     "@types/snekfetch": "^3.1.0",
-    "snekfetch": "^3.6.4",
     "typescript": "^2.8.1"
   }
 }
