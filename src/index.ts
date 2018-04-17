@@ -1,14 +1,15 @@
-import { apiHost } from './util/Constants';
-import { get } from 'snekfetch';
 import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './responses/Responses';
-import { TokenTypes } from "./util/TokenTypes";
+import { apiHost, apiHostBeta, TokenTypes } from './util/Constants';
+import { get } from 'snekfetch';
 
+export { TokenTypes } from "./util/Constants";
 export const { version } = require('../package.json');
-export { TokenTypes } from "./util/TokenTypes";
 
 export type ClientOptions = {
+	[key: string]: any;
 	tokenType: TokenTypes;
 	token: string;
+	beta?: boolean;
 	userAgent?: string;
 }
 
@@ -33,16 +34,20 @@ type RequestOptions = {
 
 export class Client {
 	public constructor(options: ClientOptions) {
-		if (!options.token) throw new Error('Token is a required parameter!')
-		if (!options.tokenType) throw new Error('TokenType is a required parameter')
+		if (!options.token) throw new Error('Token is a required parameter.')
+		if (!options.tokenType) throw new Error('TokenType is a required parameter.')
 		this.token = `${options.tokenType} ${options.token}`;
 		this.userAgent = options.userAgent || `weebts/${version}`;
+		this.beta = options.beta || true;
+		this.host = this.beta ? apiHostBeta : apiHost
 	}
 
 	private token: string;
 	private userAgent: string;
+	private beta: boolean;
+	private host: string;
 
-	private makeRequest(options: RequestOptions): Promise<any>{
+	private makeRequest(options: RequestOptions): Promise<any> {
 		const query: Query = {};
 		if (options.params) {
 			for (const key of Object.keys(options.params)) {
@@ -50,12 +55,9 @@ export class Client {
 				query[key] = Array.isArray(val) ? val.map(String).join(", ") : String(val);
 			}
 		}
-		const request = get(`${apiHost}${options.path}`)
-			.set('Authorization', this.token);
-		for (const key of Object.keys(query)) {
-			request.query(key, query[key]);
-		}
-		return request
+		return get(`${this.host}${options.path}`, { headers: { 'user-agent': this.userAgent } })
+			.set('Authorization', this.token)
+			.query(query)
 			.then(res => res.body);
 	}
 
