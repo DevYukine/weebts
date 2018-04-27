@@ -9,7 +9,7 @@ import { Client, TokenType: { Wolke }} from 'weebts';
 
 const client: Client = new Client({ token: "Your-Super-Secret-Token", tokenType: Wolke });
 
-client.getRandom()
+client.getRandom({ type: 'some_type'})
 	.then(console.log)
 	.catch(console.error);
 ```
@@ -19,7 +19,7 @@ Javascript:
 const { Client, TokenType: { Wolke }} = require('weebts');
 const client = new Client({ token: "Your-Super-Secret-Token", tokenType: Wolke });
 
-client.getRandom()
+client.getRandom({ type: 'some_type'})
 	.then(console.log)
 	.catch(console.error);
 ```
