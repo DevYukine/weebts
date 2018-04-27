@@ -1,6 +1,6 @@
-import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './responses/Responses';
-import { apiHost, apiHostBeta, TokenTypes } from './util/Constants';
 import { get } from 'snekfetch';
+import { apiHost, TokenTypes } from './util/Constants';
+import { TypeResponse, TagsResponse, RandomResponse, ImageResponse } from './responses/Responses';
 
 export { TokenTypes } from "./util/Constants";
 export const { version } = require('../package.json');
@@ -9,7 +9,6 @@ export type ClientOptions = {
 	[key: string]: any;
 	tokenType: TokenTypes;
 	token: string;
-	beta?: boolean;
 	userAgent?: string;
 }
 
@@ -23,7 +22,7 @@ export type QueryParameter = {
 	filetype?: string,
 }
 
-type Query = {
+export type Query = {
 	[key: string]: any
 }
 
@@ -33,32 +32,14 @@ type RequestOptions = {
 }
 
 export class Client {
-	public constructor(options: ClientOptions) {
-		if (!options.token) throw new Error('Token is a required parameter.')
-		if (!options.tokenType) throw new Error('TokenType is a required parameter.')
-		this.token = `${options.tokenType} ${options.token}`;
-		this.userAgent = options.userAgent || `weebts/${version}`;
-		this.beta = options.beta || true;
-		this.host = this.beta ? apiHostBeta : apiHost
-	}
-
 	private token: string;
 	private userAgent: string;
-	private beta: boolean;
-	private host: string;
 
-	private makeRequest(options: RequestOptions): Promise<any> {
-		const query: Query = {};
-		if (options.params) {
-			for (const key of Object.keys(options.params)) {
-				const val = options.params[key];
-				query[key] = Array.isArray(val) ? val.map(String).join(", ") : String(val);
-			}
-		}
-		return get(`${this.host}${options.path}`, { headers: { 'user-agent': this.userAgent } })
-			.set('Authorization', this.token)
-			.query(query)
-			.then(res => res.body);
+	public constructor(options: ClientOptions) {
+		if (typeof options.token !== 'string') throw new TypeError(`Type of token parameter is wrong, expected string got ${typeof options.token}.`)
+		if (typeof options.tokenType !== 'string') throw new TypeError(`Type of token parameter is wrong, expected string got ${typeof options.tokenType}.`)
+		this.token = `${options.tokenType} ${options.token}`;
+		this.userAgent = options.userAgent || `weebts/${version}`;
 	}
 
 	public getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
@@ -73,7 +54,22 @@ export class Client {
 		return this.makeRequest({ path: '/random', params });
 	}
 
-	public getImage(id: String): Promise<ImageResponse> {
+	public getImage(id: string): Promise<ImageResponse> {
+		if (!id) throw new TypeError('ID parameter is a required parameter')
 		return this.makeRequest({ path: `/info/${id}` });
+	}
+
+	private makeRequest(options: RequestOptions): Promise<any> {
+		const query: Query = {};
+		if (options.params) {
+			for (const key of Object.keys(options.params)) {
+				const val = options.params[key];
+				query[key] = Array.isArray(val) ? val.map(String).join(", ") : String(val);
+			}
+		}
+		return get(`${apiHost}${options.path}`)
+		.set({ 'Authorization': this.token, 'user-agent': this.userAgent })
+		.query(query)
+		.then(res => res.body);
 	}
 }
