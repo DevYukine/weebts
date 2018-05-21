@@ -1,6 +1,6 @@
 {
   "name": "weebts",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Typescript and Javascript wrapper around weeb.sh",
   "main": "./dist/index.js",
   "types": "./dist/typings/index.d.ts",
