@@ -1,7 +1,7 @@
 import { get } from 'snekfetch';
 import { apiHost, TokenTypes } from '../util/Constants';
 import { TypeResponse, TagsResponse, ImageResponse } from '../responses/Responses';
-const { version } = require('../package.json');
+const { version } = require('../../package.json');
 
 export type ClientOptions = {
 	[key: string]: any;
