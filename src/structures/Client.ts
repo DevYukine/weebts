@@ -30,34 +30,34 @@ type RequestOptions = {
 };
 
 export class Client {
-	private token: string;
-	private userAgent: string;
+	private _token: string;
+	private _userAgent: string;
 
 	public constructor(options: ClientOptions) {
 		if (typeof options.token !== 'string') throw new TypeError(`Type of token parameter is wrong, expected string got ${typeof options.token}.`);
 		if (typeof options.tokenType !== 'string') throw new TypeError(`Type of token parameter is wrong, expected string got ${typeof options.tokenType}.`);
-		this.token = `${options.tokenType} ${options.token}`;
-		this.userAgent = options.userAgent || `weebts/${version}`;
+		this._token = `${options.tokenType} ${options.token}`;
+		this._userAgent = options.userAgent || `weebts/${version}`;
 	}
 
 	public getTypes(params: QueryParameter = {}): Promise<TypeResponse> {
-		return this.makeRequest({ path: '/types' , params });
+		return this._makeRequest({ path: '/types' , params });
 	}
 
 	public getTags(params: QueryParameter = {}): Promise<TagsResponse> {
-		return this.makeRequest({ path: '/tags' , params });
+		return this._makeRequest({ path: '/tags' , params });
 	}
 
 	public getRandom(params: QueryParameter = {}): Promise<ImageResponse> {
-		return this.makeRequest({ path: '/random', params });
+		return this._makeRequest({ path: '/random', params });
 	}
 
 	public getImage(id: string): Promise<ImageResponse> {
 		if (!id) throw new TypeError('ID parameter is a required parameter');
-		return this.makeRequest({ path: `/info/${id}` });
+		return this._makeRequest({ path: `/info/${id}` });
 	}
 
-	private makeRequest(options: RequestOptions): Promise<any> {
+	private _makeRequest(options: RequestOptions): Promise<any> {
 		const query: Query = {};
 		if (options.params) {
 			for (const key of Object.keys(options.params)) {
@@ -66,7 +66,7 @@ export class Client {
 			}
 		}
 		return get(`${apiHost}${options.path}`)
-		.set({ 'Authorization': this.token, 'user-agent': this.userAgent })
+		.set({ 'Authorization': this._token, 'user-agent': this._userAgent })
 		.query(query)
 		.then(res => res.body);
 	}
