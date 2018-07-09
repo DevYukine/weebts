@@ -1,4 +1,4 @@
-import { get } from 'snekfetch';
+import fetch from 'node-fetch';
 import { apiHost, TokenTypes } from '../util/Constants';
 import { TypeResponse, TagsResponse, ImageResponse } from '../responses/Responses';
 const { version } = require('../../package.json');
@@ -21,7 +21,7 @@ export type QueryParameter = {
 };
 
 export type Query = {
-	[key: string]: any
+	[key: string]: string;
 };
 
 type RequestOptions = {
@@ -57,17 +57,19 @@ export class Client {
 		return this._makeRequest({ path: `/info/${id}` });
 	}
 
-	private _makeRequest(options: RequestOptions): Promise<any> {
-		const query: Query = {};
+	private async _makeRequest(options: RequestOptions): Promise<any> {
+		let querystring = '';
 		if (options.params) {
 			for (const key of Object.keys(options.params)) {
-				const val = options.params[key];
-				query[key] = Array.isArray(val) ? val.map(String).join(', ') : String(val);
+				const value = options.params[key];
+				const newValue = Array.isArray(value) ? value.map(String).join(', ') : String(value);
+				querystring += `${key}=${newValue}&`;
 			}
 		}
-		return get(`${apiHost}${options.path}`)
-		.set({ 'Authorization': this._token, 'user-agent': this._userAgent })
-		.query(query)
-		.then(res => res.body);
+		const res = await fetch(`${apiHost}${options.path}?${querystring}`, { headers: { 'Authorization': this._token, 'user-agent': this._userAgent } });
+		if (res.ok) {
+			return res.json();
+		}
+		throw new Error(`${res.status} ${res.statusText}`);
 	}
 }
